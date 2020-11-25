@@ -8,8 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EwokTest {
 
+    private Ewok e;
+
     @BeforeEach
     void setUp() {
+        e = new Ewok();
     }
 
     @AfterEach
@@ -17,10 +20,16 @@ class EwokTest {
     }
 
     @Test
-    void acquire() {
+    void testAcquire() {
+       e.available=true;
+       e.acquire();
+        assertFalse(e.available);
     }
 
     @Test
-    void release() {
+    void testRelease() {
+        e.available=false;
+        e.release();
+        assertTrue(e.available);
     }
 }
