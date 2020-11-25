@@ -45,7 +45,8 @@ public class Future<T> {
      * @return true if this object has been resolved, false otherwise
      */
 	public boolean isDone() {
-		return null;
+		System.out.println("by default for first empty build changed to always return true; future.java:isDone()");
+		return true;
 	}
 	
 	/**
