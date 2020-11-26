@@ -12,23 +12,26 @@ class EwokTest {
 
     @BeforeEach
     void setUp() {
-        e = new Ewok();
-    }
-
-    @AfterEach
-    void tearDown() {
+        e = new Ewok(10);
     }
 
     @Test
     void testAcquire() {
-       e.available=true;
-       e.acquire();
+        e.acquire();
         assertFalse(e.available);
+        try{ // expect exception while trying to acquire an already acquired Ewok
+            e.acquire();
+            fail("Ewok already acquired");
+        }catch (Exception exp){}
     }
 
     @Test
     void testRelease() {
-        e.available=false;
+        try{ // expect exception while trying to release an already available Ewok
+            e.release();
+            fail("Ewok already available");
+        }catch (Exception exp){}
+        e.acquire();
         e.release();
         assertTrue(e.available);
     }

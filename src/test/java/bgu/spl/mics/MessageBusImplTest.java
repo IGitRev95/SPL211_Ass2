@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class MessageBusImplTest {
 
     private MessageBusImpl mBus;
-    private Future f1;
 
     @BeforeEach
     void setUp() {
@@ -37,6 +36,7 @@ class MessageBusImplTest {
         check the event arrived to its destination and make
         sure it is the same event.
          */
+
     }
 
     @Test
