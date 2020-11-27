@@ -18,7 +18,8 @@ public class Future<T> {
 	 * This should be the the only public constructor in this class.
 	 */
 	public Future() {
-		
+		isDone=false;
+		result=null;
 	}
 	
 	/**
@@ -45,8 +46,7 @@ public class Future<T> {
      * @return true if this object has been resolved, false otherwise
      */
 	public boolean isDone() {
-		System.out.println("by default for first empty build changed to always return true; future.java:isDone()");
-		return true;
+		return isDone;
 	}
 	
 	/**
