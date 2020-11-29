@@ -36,7 +36,6 @@ public class Future<T> {
 			try { wait();}
 			catch (InterruptedException ex){}
 		}
-
         return result;
 	}
 	
