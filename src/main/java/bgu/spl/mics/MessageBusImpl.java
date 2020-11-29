@@ -9,8 +9,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class MessageBusImpl implements MessageBus {
 
-
 	private ConcurrentHashMap<MicroService, ConcurrentLinkedQueue<Message>> MessegeQueses= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Class<? extends Message> , ConcurrentLinkedQueue<MicroService>> Mes= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Event,Future> M= new ConcurrentHashMap<>();
 
 	private static class SingletonHolder {
 		private static MessageBusImpl instance= new MessageBusImpl();

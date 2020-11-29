@@ -22,4 +22,6 @@ public class HanSoloMicroservice extends MicroService {
     protected void initialize() {
 
     }
-}
+
+
+    }

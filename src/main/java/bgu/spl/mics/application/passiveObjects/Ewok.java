@@ -19,18 +19,22 @@ public class Ewok {
     /**
      * Acquires an Ewok
      */
-    public void acquire() {
-        if(!available)
-            throw new IllegalArgumentException();
+    public synchronized void acquire() {
+      while(!available) try {wait();}
+      catch (InterruptedException e) {
+          e.printStackTrace();
+      } ;
+//            throw new IllegalArgumentException();
         available=false;
     }
 
     /**
      * release an Ewok
      */
-    public void release() {
+    public synchronized void release() {
         if(available)
             throw new IllegalArgumentException();
         available=true;
+        notifyAll();
     }
 }

@@ -1,4 +1,5 @@
 package bgu.spl.mics;
+import java.util.HashMap;
 
 /**
  * The MicroService is an abstract class that any micro-service in the system
@@ -19,9 +20,10 @@ package bgu.spl.mics;
  * <p>
  */
 public abstract class MicroService implements Runnable { 
-    
+    // how to terminate- lets go for interaption
     private final String name;
     private MessageBus messageBus = MessageBusImpl.getInstance();
+    private HashMap<Class<? extends Message>, Callback<? extends Message>> messageInstructions;
 
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
@@ -149,7 +151,8 @@ public abstract class MicroService implements Runnable {
      */
     @Override
     public final void run() {
-    	
+        while(true)
+        System.out.println("yalla bye");
     }
 
 }
