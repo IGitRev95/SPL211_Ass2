@@ -9,19 +9,26 @@ package bgu.spl.mics.application.passiveObjects;
 public class Ewok {
 	int serialNumber;
 	boolean available;
-	
-  
+
+	public Ewok(int SerialNumber){
+	    this.serialNumber=SerialNumber;
+	    available=true;
+    }
     /**
      * Acquires an Ewok
      */
     public void acquire() {
-		
+		if(!available) {throw new IllegalArgumentException();}
+		else
+		    available=false;
     }
 
     /**
      * release an Ewok
      */
     public void release() {
+        if (available) throw new IllegalArgumentException();
+        else available=true;
     	
     }
 }
