@@ -20,13 +20,14 @@ package bgu.spl.mics;
  */
 public abstract class MicroService implements Runnable { 
     
-
+private final String name;
+    private MessageBus messageBus = MessageBusImpl.getInstance();
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
     public MicroService(String name) {
-    	
+    	this.name=name;
     }
 
     /**
@@ -51,7 +52,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-    	
+        // need to implement the callback
+    	messageBus.subscribeEvent(type,this);
     }
 
     /**
@@ -75,7 +77,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-    	
+        // need to notice to callback
+    	messageBus.subscribeBroadcast(type, this);
     }
 
     /**
@@ -91,8 +94,7 @@ public abstract class MicroService implements Runnable {
      * 	       			null in case no micro-service has subscribed to {@code e.getClass()}.
      */
     protected final <T> Future<T> sendEvent(Event<T> e) {
-    	
-        return null; 
+        return messageBus.sendEvent(e);
     }
 
     /**
@@ -102,7 +104,7 @@ public abstract class MicroService implements Runnable {
      * @param b The broadcast message to send
      */
     protected final void sendBroadcast(Broadcast b) {
-    	
+    	messageBus.sendBroadcast(b);
     }
 
     /**
@@ -137,7 +139,7 @@ public abstract class MicroService implements Runnable {
      *         construction time and is used mainly for debugging purposes.
      */
     public final String getName() {
-        return null;
+        return name;
     }
 
     /**
