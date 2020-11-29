@@ -20,8 +20,9 @@ package bgu.spl.mics;
  */
 public abstract class MicroService implements Runnable { 
     
-private final String name;
+    private final String name;
     private MessageBus messageBus = MessageBusImpl.getInstance();
+
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
      *             does not have to be unique)
