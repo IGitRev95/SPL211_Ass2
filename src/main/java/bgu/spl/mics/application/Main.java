@@ -9,7 +9,23 @@ import bgu.spl.mics.application.services.HanSoloMicroservice;
  */
 public class Main {
 	public static void main(String[] args) {
-		Thread t1= new Thread(new HanSoloMicroservice());
-		t1.start();
+		/*
+		TODO: parse Json
+		TODO: init Ewoks pool
+		TODO: init Diary
+		TODO: init MessageBus
+		TODO: init Leia - with json attacks array data
+		TODO: init HanSolo
+		TODO: init C3PO
+		TODO: init R2D2 - with json sleep data
+		TODO: init Lando - with json sleep data
+
+		TODO: init thread pool
+		TODO: deliver microservices to threads and run all
+		TODO: set a gracefully termination process with interrupts, joins, and closing al microservices
+		TODO: construct Json from diary for output file
+		 */
+
+
 	}
 }
