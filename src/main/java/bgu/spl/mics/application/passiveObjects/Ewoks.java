@@ -13,6 +13,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * You can add ONLY private methods and fields to this class.
  */
 public class Ewoks {
-    ConcurrentHashMap<Integer,Ewok> EwoksCollection;
+    //ConcurrentHashMap<Integer,Ewok> EwoksCollection;
+    private int size;
+
+    public Ewoks(int numOfEwoks){
+        size=numOfEwoks;
+    }
 
 }
