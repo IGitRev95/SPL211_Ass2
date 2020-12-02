@@ -32,13 +32,26 @@ public class Main {
 
 		MessageBus messageBus = new MessageBusImpl();
 		Diary battleLog = new Diary();
-		Ewoks ewoksPoll = new Ewoks(inputJson.Ewoks);
-		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks);
-		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2);
-		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando);
+		Ewoks ewoksPoll = new Ewoks(inputJson.Ewoks);//,messageBus);
+		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks);//,messageBus);
+		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2);//,messageBus);
+		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando);//,messageBus);
 
-		HanSoloMicroservice hSolo = new HanSoloMicroservice();
-		C3POMicroservice c3po = new C3POMicroservice();
+		HanSoloMicroservice hSolo = new HanSoloMicroservice();//,messageBus);
+		C3POMicroservice c3po = new C3POMicroservice();//,messageBus);
+
+		Thread pL = new Thread(pLeia);
+		Thread r2 = new Thread(r2D2);
+		Thread lN = new Thread(lando);
+		Thread hS = new Thread(hSolo);
+		Thread c3 = new Thread(c3po);
+		/*
+		Thread[] threads ={pL,r2,lN,hS,c3};
+		for (Thread th:threads ) { th.start();	}
+		 */
+		/*
+		Optional usage of thread pool?
+		 */
 
 
 //		try {
