@@ -21,7 +21,6 @@ import java.io.*;
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
 		/*
-
 		TODO: maybe init thread pool
 		TODO: deliver microservices to threads and run all
 		TODO: set a gracefully termination process with interrupts, joins, and closing al microservices
@@ -30,8 +29,8 @@ public class Main {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 
-		Diary battleLog = new Diary();
-		Ewoks ewoksPool = new Ewoks(inputJson.Ewoks);
+		Diary battleLog = Diary.getInstance();
+		Ewoks ewoksPool = Ewoks.init(inputJson.Ewoks);
 		MessageBus messageBus = new MessageBusImpl();
 		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks);//,messageBus,battleLog);
 		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2);//,messageBus,battleLog);
