@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.passiveObjects;
 
 
+import bgu.spl.mics.MessageBusImpl;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -13,6 +15,32 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * You can add ONLY private methods and fields to this class.
  */
 public class Ewoks {
-    ConcurrentHashMap<Integer,Ewok> EwoksCollection;
+    private final Ewok[] EwoksCollection;
+    private static Ewoks singleton= null;
+    private Ewoks(int NumberOfEwoks){
+        EwoksCollection= new Ewok[NumberOfEwoks];
+    }
+public synchronized static Ewoks init(int NumberOfEwoks){
+        if (singleton!=null)throw new AssertionError("you allready initialized");
+        singleton=new Ewoks(NumberOfEwoks);
+        return singleton;
+     }
+
+    public static Ewoks getInstance(){
+        if (singleton==null) throw new AssertionError("have to call init first");
+    return singleton;
+    }
+    // need to be public
+    public void acquireEwok(int serial){
+        EwoksCollection[serial].acquire();
+    }
+    //need to be public
+    public void releaseEwok(int serial){
+        if(EwoksCollection[serial]==null||EwoksCollection[serial].available)
+            throw new IllegalArgumentException("null or already relesed");
+        EwoksCollection[serial].release();
+
+    }
+
 
 }

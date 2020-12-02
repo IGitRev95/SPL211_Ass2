@@ -1,4 +1,6 @@
 package bgu.spl.mics;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -9,9 +11,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class MessageBusImpl implements MessageBus {
 
-	private ConcurrentHashMap<MicroService, ConcurrentLinkedQueue<Message>> MessegeQueses= new ConcurrentHashMap<>();
-	private ConcurrentHashMap<Class<? extends Message> , ConcurrentLinkedQueue<MicroService>> Mes= new ConcurrentHashMap<>();
-	private ConcurrentHashMap<Event,Future> M= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<MicroService, BlockingQueue<Message>> MessegeQueses= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Class<? extends Message> , BlockingQueue<MicroService>> Mes= new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Event<?>,Future<?>> M= new ConcurrentHashMap<>();
 
 	private static class SingletonHolder {
 		private static MessageBusImpl instance= new MessageBusImpl();

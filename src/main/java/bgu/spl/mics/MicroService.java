@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The MicroService is an abstract class that any micro-service in the system
@@ -19,8 +20,8 @@ import java.util.HashMap;
  * Only private fields and methods may be added to this class.
  * <p>
  */
-public abstract class MicroService implements Runnable { 
-    // how to terminate- lets go for interaption
+public abstract class MicroService implements Runnable {
+    boolean terminate=false;
     private final String name;
     private MessageBus messageBus = MessageBusImpl.getInstance();
     private HashMap<Class<? extends Message>, Callback<? extends Message>> messageInstructions;
@@ -31,6 +32,7 @@ public abstract class MicroService implements Runnable {
      */
     public MicroService(String name) {
     	this.name=name;
+
     }
 
     /**
@@ -56,6 +58,7 @@ public abstract class MicroService implements Runnable {
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
         // need to implement the callback
+        messageInstructions.put(type,callback);
     	messageBus.subscribeEvent(type,this);
     }
 
@@ -81,6 +84,7 @@ public abstract class MicroService implements Runnable {
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
         // need to notice to callback
+        messageInstructions.put(type,callback);
     	messageBus.subscribeBroadcast(type, this);
     }
 
@@ -121,7 +125,7 @@ public abstract class MicroService implements Runnable {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-    	
+    	messageBus.complete(e,result);
     }
 
     /**
@@ -134,7 +138,7 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
-    	
+    	terminate=true;
     }
 
     /**
@@ -151,8 +155,17 @@ public abstract class MicroService implements Runnable {
      */
     @Override
     public final void run() {
-        while(true)
-        System.out.println("yalla bye");
+        messageBus.register(this);
+        this.initialize();
+        while(!terminate){
+            try {
+                Message CurrentMessage = messageBus.awaitMessage(this);
+                Class<? extends Message> HowToReact = CurrentMessage.getClass();
+                Callback action= messageInstructions.get(HowToReact);
+                if(action!= null) action.call(CurrentMessage);
+            }catch (InterruptedException ex){throw new IllegalStateException();}
+        }
+        messageBus.unregister(this);
     }
 
 }

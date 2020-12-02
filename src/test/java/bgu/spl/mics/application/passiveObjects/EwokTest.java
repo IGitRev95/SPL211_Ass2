@@ -17,12 +17,9 @@ class EwokTest {
 
     @Test
     void testAcquire() {
+        assertTrue(e.available);
         e.acquire();
         assertFalse(e.available);
-        try{ // expect exception while trying to acquire an already acquired Ewok
-            e.acquire();
-            fail("Ewok already acquired");
-        }catch (Exception exp){}
     }
 
     @Test

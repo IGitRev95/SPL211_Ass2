@@ -54,7 +54,7 @@ class MessageBusImplTest {
         assert that the event result is B
          */
         //init
-        MicroService m1 = new HanSoloMicroservice();
+        MicroService m1 = new TesterMicroservice();
         mBus.register(m1);
         mBus.subscribeEvent(SimpleEventForTest.class,m1);
         SimpleEventForTest sE1=new SimpleEventForTest(1);
@@ -75,8 +75,8 @@ class MessageBusImplTest {
         broadcast message at the end of the queue and the left one hadn't get it
          */
         //init
-        MicroService m1 = new HanSoloMicroservice();
-        MicroService m2 = new C3POMicroservice();
+        MicroService m1 = new TesterMicroservice();
+        MicroService m2 = new TesterMicroservice();
         mBus.register(m1);
         mBus.register(m2);
         SimpleBroadcast bCast = new SimpleBroadcast();
@@ -98,8 +98,8 @@ class MessageBusImplTest {
         - send 3 events and make sure they were delivered in around robin manner
          */
         //init
-        MicroService m1 = new HanSoloMicroservice();
-        MicroService m2 = new C3POMicroservice();
+        MicroService m1 = new TesterMicroservice();
+        MicroService m2 = new TesterMicroservice();
         mBus.register(m1);
         mBus.register(m2);
         //if an event had been sent before any micro service had subscribed to it then it's got no future
@@ -145,7 +145,7 @@ class MessageBusImplTest {
     @Test
     void testAwaitMessage() {
         //init
-        MicroService m1 = new HanSoloMicroservice();
+        MicroService m1 = new TesterMicroservice();
         mBus.register(m1);
         mBus.subscribeEvent(SimpleEventForTest.class,m1);
         SimpleEventForTest sE1=new SimpleEventForTest(1);

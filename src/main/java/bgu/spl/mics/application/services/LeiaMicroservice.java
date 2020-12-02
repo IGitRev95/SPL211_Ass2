@@ -24,6 +24,8 @@ public class LeiaMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-    	
+    	for(int i=0;i<attacks.length;i++){
+    	    sendEvent(new AttackEvent(attacks[i]));
+        }
     }
 }
