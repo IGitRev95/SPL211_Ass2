@@ -30,15 +30,15 @@ public class Main {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 
-		MessageBus messageBus = new MessageBusImpl();
 		Diary battleLog = new Diary();
-		Ewoks ewoksPoll = new Ewoks(inputJson.Ewoks);//,messageBus);
-		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks);//,messageBus);
-		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2);//,messageBus);
-		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando);//,messageBus);
+		Ewoks ewoksPool = new Ewoks(inputJson.Ewoks);
+		MessageBus messageBus = new MessageBusImpl();
+		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks);//,messageBus,battleLog);
+		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2);//,messageBus,battleLog);
+		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando);//,messageBus,battleLog);
 
-		HanSoloMicroservice hSolo = new HanSoloMicroservice();//,messageBus);
-		C3POMicroservice c3po = new C3POMicroservice();//,messageBus);
+		HanSoloMicroservice hSolo = new HanSoloMicroservice();//,messageBus,ewoksPool,battleLog);
+		C3POMicroservice c3po = new C3POMicroservice();//,messageBus,ewoksPool,battleLog);
 
 		Thread pL = new Thread(pLeia);
 		Thread r2 = new Thread(r2D2);
