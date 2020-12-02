@@ -25,7 +25,7 @@ private Ewoks ewoks= Ewoks.getInstance();
     @Override
     protected void initialize() {
         subscribeEvent(AttackEvent.class, c-> {
-            List<Integer> EwoksForAttack= c.getSerials();
+            List<Integer> EwoksForAttack = c.getSerials();
             for (int i=0;i<EwoksForAttack.size(); i++) {ewoks.acquireEwok(EwoksForAttack.get(i)); }
             try {
                 Thread.sleep(c.getDuration());
