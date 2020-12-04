@@ -27,26 +27,51 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 
+//		if(!microservicesMessageQueues.containsKey(m))
+//		{
+//			throw new NullPointerException("none registered microservice");
+//		}
+//
+//		BlockingQueue<MicroService> eventTypeHandlersQueue = messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
+//		if (eventTypeHandlersQueue != null && !eventTypeHandlersQueue.contains(m)) {
+//			//no problem with sync cause only this microservice manipulates the MessageBus at all manners referring to itself
+//			eventTypeHandlersQueue.add(m);
+//		}
+
+		subscribeMessage(type,m);
+	}
+
+	@Override
+	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
+
+//		if(!microservicesMessageQueues.containsKey(m))
+//		{
+//			throw new NullPointerException("none registered microservice");
+//		}
+//
+//		BlockingQueue<MicroService> broadcastTypeHandlersQueue = messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
+//		if (broadcastTypeHandlersQueue != null && !broadcastTypeHandlersQueue.contains(m)) {
+//			//no problem with sync cause only this microservice manipulates the MessageBus at all manners referring to itself
+//			broadcastTypeHandlersQueue.add(m);
+//		}
+
+		subscribeMessage(type,m);
+	}
+
+	private void subscribeMessage(Class<? extends Message> type, MicroService m) {
+
 		if(!microservicesMessageQueues.containsKey(m))
 		{
 			throw new NullPointerException("none registered microservice");
 		}
 
-		BlockingQueue<MicroService> eventTypeHandlersQueue = messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
-		if (eventTypeHandlersQueue != null && !eventTypeHandlersQueue.contains(m)) {
+		BlockingQueue<MicroService> messageTypeHandlersQueue = messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
+		if (messageTypeHandlersQueue != null && !messageTypeHandlersQueue.contains(m)) {
 			//no problem with sync cause only this microservice manipulates the MessageBus at all manners referring to itself
-			eventTypeHandlersQueue.add(m);
+			messageTypeHandlersQueue.add(m);
 		}
 	}
 
-	@Override
-	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
-	/*
-	-checking if broadcast is already exists in the messagesHandlersQueues hash map
-	-if it does insert the microservice to the message handler queue
-	-else create a new queue for it and then insert the microservice to the message handler queue
-	 */
-	}
 
 	@Override
 	@SuppressWarnings("unchecked")
