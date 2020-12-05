@@ -23,18 +23,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
 		/*
-		TODO: maybe init thread pool
-		TODO: deliver microservices to threads and run all
-		TODO: set a gracefully termination process with interrupts, joins, and closing al microservices
 		TODO: construct Json from diary for output file
 		 */
+		Diary battleLog = Diary.getInstance();// manage Time stamps relatively to its creation
+
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 
 		CountDownLatch threadInitCounter = new CountDownLatch(4);
-		AtomicInteger attackCounter = new AtomicInteger(0);
+		AtomicInteger attackCounter = battleLog.getTotalAttacks();
 
-		Diary battleLog = Diary.getInstance();
 		Ewoks ewoksPool = Ewoks.init(inputJson.Ewoks);
 		MessageBus messageBus = new MessageBusImpl();
 		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks,threadInitCounter);//,messageBus,battleLog);
@@ -43,25 +41,21 @@ public class Main {
 
 		HanSoloMicroservice hSolo = new HanSoloMicroservice(threadInitCounter,attackCounter);//,messageBus,ewoksPool,battleLog);
 		C3POMicroservice c3po = new C3POMicroservice(threadInitCounter,attackCounter);//,messageBus,ewoksPool,battleLog);
-
+/*
 		Thread pL = new Thread(pLeia);
 		Thread r2 = new Thread(r2D2);
 		Thread lN = new Thread(lando);
 		Thread hS = new Thread(hSolo);
 		Thread c3 = new Thread(c3po);
-
 		Thread[] threads ={pL,r2,lN,hS,c3};
-		for (Thread th:threads ) { th.start();	}
-
-		/*
-		Optional usage of thread pool?
-		 */
+*/
+		Thread[] threads ={new Thread(pLeia),new Thread(lando),new Thread(r2D2),new Thread(hSolo),new Thread(c3po)};
+		for (Thread th:threads ) { th.start();}
 
 
 //		try {
 //			objectToOutputJsonFile(gson, inputJson, args[1]);
 //		}catch (IOException exp){ exp.printStackTrace();}
-
 		System.out.println("Finish");
 	}
 

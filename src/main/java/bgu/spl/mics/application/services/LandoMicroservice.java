@@ -3,8 +3,12 @@ package bgu.spl.mics.application.services;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
+import bgu.spl.mics.application.passiveObjects.Diary;
 
 import java.util.concurrent.CountDownLatch;
+
+import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.LandoTerminate;
+import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate;
 
 /**
  * LandoMicroservice
@@ -33,7 +37,8 @@ private CountDownLatch Initilized;
                complete(callback,false);}
 
            sendBroadcast(new TerminateBroadcast());
-           // here to updateTermiantion
+           //here updating terminate
+           Diary.getInstance().SetTimeDetail(LandoTerminate,System.currentTimeMillis());
            terminate();
        });
         Initilized.countDown();

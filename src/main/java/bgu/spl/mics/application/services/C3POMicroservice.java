@@ -3,12 +3,15 @@ package bgu.spl.mics.application.services;
 import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.*;
+import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.*;
 
 
 /**
@@ -55,10 +58,12 @@ public class C3POMicroservice extends MicroService {
                 //informing Lando to prepare for Bombing after R2D2 Deactivition
                 sendEvent(new BombDestroyerEvent(DeactivionFuture));
             }
-            //here to update Finishing
+            //here updating Finishing
+            Diary.getInstance().SetTimeDetail(C3POFinish,System.currentTimeMillis());
         } );
         subscribeBroadcast(TerminateBroadcast.class, c->{
-            //here to update terminate
+            //here updating terminate
+            Diary.getInstance().SetTimeDetail(C3POTerminate,System.currentTimeMillis());
             terminate();
         });
         Initilized.countDown();

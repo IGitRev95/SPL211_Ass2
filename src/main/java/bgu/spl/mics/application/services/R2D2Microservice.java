@@ -5,10 +5,12 @@ import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Diary;
+import bgu.spl.mics.application.passiveObjects.TimeDetailOf;
 
 import java.util.concurrent.CountDownLatch;
 
 import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Deactivate;
+import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate;
 
 /**
  * R2D2Microservices is in charge of the handling {@link DeactivationEvent}.
@@ -35,18 +37,16 @@ private CountDownLatch Initilized;
          } catch (InterruptedException e) {
              e.printStackTrace();
          }
-         //here to update finishing
-         //-----------for example----------------
-       //  Diary d=Diary.getInstance();
-         //d.SetTimeDetail(R2D2Deactivate,1L);
-        // --------------------------------------
+
          complete(callback,true);
-         //update finishing
+         //here updating finishing
+         Diary.getInstance().SetTimeDetail(R2D2Deactivate,System.currentTimeMillis());
 
      });
         subscribeBroadcast(TerminateBroadcast.class, c->{
-            //here to update terminate
-            terminate();});
+            //here updating terminate
+            Diary.getInstance().SetTimeDetail(R2D2Terminate,System.currentTimeMillis());
+            terminate();} );
         Initilized.countDown();
     }
 

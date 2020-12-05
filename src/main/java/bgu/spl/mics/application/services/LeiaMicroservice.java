@@ -8,6 +8,10 @@ import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.*;//should already know it? maybe needless
 import bgu.spl.mics.application.passiveObjects.*;
 import java.util.concurrent.CountDownLatch;
+
+import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.LeiaTerminate;
+import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate;
+
 /**
  * LeiaMicroservices Initialized with Attack objects, and sends them as  {@link AttackEvent}.
  * This class may not hold references for objects which it is not responsible for:
@@ -29,7 +33,8 @@ public class LeiaMicroservice extends MicroService {
     @Override
     protected void initialize() {
         subscribeBroadcast(TerminateBroadcast.class,c->{
-            //here to update terminate
+            //here updating terminate
+            Diary.getInstance().SetTimeDetail(LeiaTerminate,System.currentTimeMillis());
             terminate();});
         try {
             AttackersWereInitialized.await();

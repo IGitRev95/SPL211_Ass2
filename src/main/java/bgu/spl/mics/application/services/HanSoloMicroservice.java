@@ -4,11 +4,14 @@ import bgu.spl.mics.Callback;
 import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.*;
+import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.*;
 
 /**
  * HanSoloMicroservices is in charge of the handling {@link AttackEvent}.
@@ -60,20 +63,19 @@ public class HanSoloMicroservice extends MicroService {
                 //informing Lando to prepare for Bombing after R2D2 Deactivition
                 sendEvent(new BombDestroyerEvent(DeactivionFuture));
             }
-            //here to update Finishing
+            //here updating Finishing
+            Diary.getInstance().SetTimeDetail(HanSoloFinish,System.currentTimeMillis());
 
         });
 
 
         // how to react to terminate broadcast
         subscribeBroadcast(TerminateBroadcast.class, callback -> {
-            //here to update terminate
+            //here updating terminate
+            Diary.getInstance().SetTimeDetail(HanSoloTerminate,System.currentTimeMillis());
             terminate();
         });
         Initilized.countDown();
     }
 
-    private void updateFinishtime() {
-
-    }
 }
