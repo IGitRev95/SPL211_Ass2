@@ -15,6 +15,7 @@ public class Ewok {
     /**
      * Acquires an Ewok
      */
+    // synchronized becasue 2 microservices can try to aquire the same Ewok at the same time
     public synchronized void acquire() {
       while(!available) try {wait();}
       catch (InterruptedException e) {
@@ -26,6 +27,7 @@ public class Ewok {
     /**
      * release an Ewok
      */
+    // throw exception when the Ewok is already available
     public synchronized void release() {
         if(available)
             throw new IllegalArgumentException();
