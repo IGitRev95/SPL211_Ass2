@@ -30,34 +30,12 @@ public class MessageBusImpl implements MessageBus {
 	//TODO: Test subscribeEvent - hadn't been tested
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 
-//		if(!microservicesMessageQueues.containsKey(m))
-//		{
-//			throw new NullPointerException("none registered microservice");
-//		}
-//
-//		BlockingQueue<MicroService> eventTypeHandlersQueue = messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
-//		if (eventTypeHandlersQueue != null && !eventTypeHandlersQueue.contains(m)) {
-//			//no problem with sync cause only this microservice manipulates the MessageBus at all manners referring to itself
-//			eventTypeHandlersQueue.add(m);
-//		}
-
 		subscribeMessage(type,m);
 	}
 
 	@Override
 	//TODO: Test subscribeBroadcast - hadn't been tested
 	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
-
-//		if(!microservicesMessageQueues.containsKey(m))
-//		{
-//			throw new NullPointerException("none registered microservice");
-//		}
-//
-//		BlockingQueue<MicroService> broadcastTypeHandlersQueue = messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
-//		if (broadcastTypeHandlersQueue != null && !broadcastTypeHandlersQueue.contains(m)) {
-//			//no problem with sync cause only this microservice manipulates the MessageBus at all manners referring to itself
-//			broadcastTypeHandlersQueue.add(m);
-//		}
 
 		subscribeMessage(type,m);
 	}
@@ -158,13 +136,13 @@ public class MessageBusImpl implements MessageBus {
 	public void unregister(MicroService m) { //should be synchronized or at least block senders operations-maybe solved by the fact of using ConcurrentHashMap
 		//unsubscribe from all message handlers queues
 		/*
-the original code before intelleJ optimization offer:
+		the original code before intelleJ optimization offer:
 			for (BlockingQueue bq: messagesHandlersQueues.values() ) {
 				if (bq.contains(m)) {
 					bq.remove(m);
 				}
 			}
- */
+ 		*/
 		messagesHandlersQueues.values().stream().filter(bq -> bq.contains(m)).forEach(bq -> bq.remove(m));
 		microservicesMessageQueues.remove(m);
 
