@@ -1,4 +1,7 @@
 package bgu.spl.mics;
+import bgu.spl.mics.application.passiveObjects.Diary;
+
+import javax.print.attribute.standard.DialogTypeSelection;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -25,6 +28,7 @@ public abstract class MicroService implements Runnable {
     private final String name;
     private MessageBus messageBus = MessageBusImpl.getInstance();
     private HashMap<Class<? extends Message>, Callback<? extends Message>> messageInstructions;
+    private Diary diary= Diary.getInstance();
 
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
@@ -57,7 +61,6 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        // need to implement the callback
         messageInstructions.put(type,callback);
     	messageBus.subscribeEvent(type,this);
     }
@@ -83,7 +86,6 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        // need to notice to callback
         messageInstructions.put(type,callback);
     	messageBus.subscribeBroadcast(type, this);
     }
