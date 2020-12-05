@@ -43,10 +43,11 @@ public class Future<T> {
      * Resolves the result of this Future object.
      */
 	// synchronized because more than one microservice can try resolve
-	public void resolve (T result) {
+	public synchronized void resolve (T result) {
 		if (!isDone){
 			this.result=result;
 			isDone=true;
+			notifyAll();
 		}
 	}
 	

@@ -1,10 +1,8 @@
 package bgu.spl.mics.application.services;
 
+import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
-import bgu.spl.mics.application.messages.AttackEvent;
-import bgu.spl.mics.application.messages.DeactivationEvent;
-import bgu.spl.mics.application.messages.NoMoreAttackBroadcast;
-import bgu.spl.mics.application.messages.TerminateBroadcast;
+import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 import java.util.List;
@@ -34,14 +32,16 @@ public class C3POMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-        subscribeEvent(AttackEvent.class, c-> {
-            List<Integer> EwoksForAttack = c.getSerials();
+        subscribeEvent(AttackEvent.class, callback-> {
+            List<Integer> EwoksForAttack = callback.getSerials();
+            EwoksForAttack.sort(Integer::compareTo);// sorting serials for preventing deadlock case [1,2] [2,1]
             for (int i=0;i<EwoksForAttack.size(); i++) {ewoks.acquireEwok(EwoksForAttack.get(i)); }
             try {
-                Thread.sleep(c.getDuration());
-                complete(c,true);
+                Thread.sleep(callback.getDuration());
+                complete(callback,true);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                complete(callback, false);
             }
             for (int i=0;i<EwoksForAttack.size(); i++) {ewoks.releaseEwok(EwoksForAttack.get(i));
             }
@@ -50,8 +50,10 @@ public class C3POMicroservice extends MicroService {
         });
         subscribeBroadcast(NoMoreAttackBroadcast.class, c->{
             if (c.getNumberOfAttacks()==totalAttacks.get()&&c.getIsSendedDeactivationEvent().compareAndSet(false,true)){
-                // TODO : need to wait R2D2 had initialized
-                sendEvent(new DeactivationEvent());
+              // inform R2D2 to Deactivate
+                Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
+                //informing Lando to prepare for Bombing after R2D2 Deactivition
+                sendEvent(new BombDestroyerEvent(DeactivionFuture));
             }
             //here to update Finishing
         } );

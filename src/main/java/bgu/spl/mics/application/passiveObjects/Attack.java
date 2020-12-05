@@ -19,7 +19,6 @@ public class Attack {
      */
     public Attack(List<Integer> serialNumbers, int duration) {
         this.serials = serialNumbers;
-        serials.sort(Integer::compareTo); // sorting serials for preventing deadlock case [1,2] [2,1]
         this.duration = duration;
     }
     public List<Integer> getSerials(){

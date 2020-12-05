@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.Callback;
+import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
@@ -34,6 +35,7 @@ public class HanSoloMicroservice extends MicroService {
         subscribeEvent(AttackEvent.class, callback -> {
             // how to react to attack event
             List<Integer> EwoksForAttack = callback.getSerials();
+            EwoksForAttack.sort(Integer::compareTo);// sorting serials for preventing deadlock case [1,2] [2,1]
             for (int i = 0; i < EwoksForAttack.size(); i++) {
                 ewoks.acquireEwok(EwoksForAttack.get(i));
             }
@@ -53,8 +55,10 @@ public class HanSoloMicroservice extends MicroService {
         subscribeBroadcast(NoMoreAttackBroadcast.class, callback -> {
 
             if (callback.getNumberOfAttacks() == totalAttacks.get() && callback.getIsSendedDeactivationEvent().compareAndSet(false, true)) {
-                // TODO : need to wait R2D2 had initialized
-                sendEvent(new BombDestroyerEvent(sendEvent(new DeactivationEvent())));
+                // inform R2D2 to Deactivate
+                Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
+                //informing Lando to prepare for Bombing after R2D2 Deactivition
+                sendEvent(new BombDestroyerEvent(DeactivionFuture));
             }
             //here to update Finishing
 

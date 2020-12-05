@@ -20,7 +20,7 @@ public class Diary {
     private static class SingletonHolder {
         private static Diary instance= new Diary();
     }
-    private LinkedHashMap<TimeDetailOf,Long> TimeDetails= new LinkedHashMap<>();
+    private Map<TimeDetailOf,Long> TimeDetails= new LinkedHashMap<>();
     private int TotalAttacks=0;
 
 

@@ -3,6 +3,7 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 
 import javax.print.attribute.standard.DialogTypeSelection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -27,7 +28,7 @@ public abstract class MicroService implements Runnable {
     boolean terminate=false;
     private final String name;
     private MessageBus messageBus = MessageBusImpl.getInstance();
-    private HashMap<Class<? extends Message>, Callback<? extends Message>> messageInstructions;
+    private Map<Class<? extends Message>, Callback<? extends Message>> messageInstructions= new HashMap<>();
     private Diary diary= Diary.getInstance();
 
     /**
@@ -36,7 +37,6 @@ public abstract class MicroService implements Runnable {
      */
     public MicroService(String name) {
     	this.name=name;
-
     }
 
     /**

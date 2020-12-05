@@ -4,6 +4,8 @@ import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * LandoMicroservice
  * You can add private fields and public methods to this class.
@@ -11,9 +13,11 @@ import bgu.spl.mics.application.messages.TerminateBroadcast;
  */
 public class LandoMicroservice  extends MicroService {
 private final long duration;
-    public LandoMicroservice(long duration) {
+private CountDownLatch Initilized;
+    public LandoMicroservice(long duration, CountDownLatch countdown) {
         super("Lando");
         this.duration=duration;
+        this.Initilized=countdown;
     }
 
     @Override
@@ -32,5 +36,6 @@ private final long duration;
            // here to updateTermiantion
            terminate();
        });
+        Initilized.countDown();
     }
 }
