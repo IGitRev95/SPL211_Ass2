@@ -21,7 +21,8 @@ public class Ewoks {
     private static Ewoks singleton= null;
     private Ewoks(int NumberOfEwoks){
         EwoksCollection= new Ewok[NumberOfEwoks];
-        for (int i=0;i<EwoksCollection.length;i++) EwoksCollection[i]=new Ewok(i);
+
+        for (int i=0;i<EwoksCollection.length;i++) EwoksCollection[i]=new Ewok(i+1);
     }
 public synchronized static Ewoks init(int NumberOfEwoks){
         if (singleton!=null)throw new AssertionError("you allready initialized");
@@ -35,13 +36,13 @@ public synchronized static Ewoks init(int NumberOfEwoks){
     }
     // need to be public
     public void acquireEwok(int serial){
-        EwoksCollection[serial].acquire();
+        EwoksCollection[serial-1].acquire();
     }
     //need to be public
     public void releaseEwok(int serial){
-        if(EwoksCollection[serial]==null||EwoksCollection[serial].available)
+        if(EwoksCollection[serial-1]==null||EwoksCollection[serial-1].available)
             throw new IllegalArgumentException("null or already relesed");
-        EwoksCollection[serial].release();
+        EwoksCollection[serial-1].release();
 
     }
 

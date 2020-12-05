@@ -5,6 +5,9 @@ import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Diary;
+
+import java.util.concurrent.CountDownLatch;
+
 import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Deactivate;
 
 /**
@@ -17,9 +20,11 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Deactivat
  */
 public class R2D2Microservice extends MicroService {
 private final long duration;
-    public R2D2Microservice(long duration) {
+private CountDownLatch Initilized;
+    public R2D2Microservice(long duration, CountDownLatch countdown) {
         super("R2D2");
         this.duration=duration;
+        this.Initilized=countdown;
     }
 
     @Override
@@ -32,14 +37,17 @@ private final long duration;
          }
          //here to update finishing
          //-----------for example----------------
-         Diary d=Diary.getInstance();
-         d.SetTimeDetail(R2D2Deactivate,1L);
+       //  Diary d=Diary.getInstance();
+         //d.SetTimeDetail(R2D2Deactivate,1L);
         // --------------------------------------
          complete(callback,true);
+         //update finishing
 
      });
         subscribeBroadcast(TerminateBroadcast.class, c->{
             //here to update terminate
             terminate();});
+        Initilized.countDown();
     }
+
 }
