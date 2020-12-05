@@ -50,12 +50,20 @@ public class Main {
 		Thread[] threads ={pL,r2,lN,hS,c3};
 */
 		Thread[] threads ={new Thread(pLeia),new Thread(lando),new Thread(r2D2),new Thread(hSolo),new Thread(c3po)};
-		for (Thread th:threads ) { th.start();}
+//		for (Thread th:threads ) { th.start();}
+//
+//		for (Thread th:threads ) {
+//			try {
+//				th.join();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 
+		try {
+			objectToOutputJsonFile(gson, inputJson, args[1]);
+		}catch (IOException exp){ exp.printStackTrace();}
 
-//		try {
-//			objectToOutputJsonFile(gson, inputJson, args[1]);
-//		}catch (IOException exp){ exp.printStackTrace();}
 		System.out.println("Finish");
 	}
 
@@ -74,7 +82,7 @@ public class Main {
 	 * @param outPutPath - output json file path
 	 */
 	public static void objectToOutputJsonFile(Gson gson, Object toOutputFile,String outPutPath) throws IOException {
-		FileWriter outputJson = new FileWriter(outPutPath); //TODO: complete method (Ido)
+		FileWriter outputJson = new FileWriter("output.json"); //TODO: complete method (Ido)
 		gson.toJson(toOutputFile,outputJson);
 		outputJson.close();
 	}
