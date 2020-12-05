@@ -95,6 +95,7 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
+	//TODO: Test sendBroadcast - hadn't been tested
 	public void sendBroadcast(Broadcast b) {
 	/*
 	-maybe syncronized which insures that all the currents gets and no body is added in the middle
@@ -102,6 +103,15 @@ public class MessageBusImpl implements MessageBus {
 	microservice for reference of completion of full circle of delivery to all the subscribers
 	-maybe block at once or  copy a version and the deliver to them all
 	 */
+		try {
+			for (MicroService ms : messagesHandlersQueues.get(b.getClass())) {
+				microservicesMessageQueues.get(ms).add(b);
+			}
+		} catch (NullPointerException npe){
+			System.out.println("no one has ever subscribed to this kind of broadcast");
+			npe.printStackTrace();
+		}
+
 	}
 
 
@@ -143,25 +153,26 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public void unregister(MicroService m) {
-		if(microservicesMessageQueues.containsKey(m))
-		{
-			/*
-			-unsubscribe from all message handlers queues
-			 */
-			//messagesHandlersQueues.forEach;
-			{
-
+	//TODO: Test unregister - hadn't been tested
+	public void unregister(MicroService m) { //should be synchronized or at least block senders operations-maybe solved by the fact of using ConcurrentHashMap
+		//unsubscribe from all message handlers queues
+		/*
+the original code before intelleJ optimization offer:
+			for (BlockingQueue bq: messagesHandlersQueues.values() ) {
+				if (bq.contains(m)) {
+					bq.remove(m);
+				}
 			}
+ */
+		messagesHandlersQueues.values().stream().filter(bq -> bq.contains(m)).forEach(bq -> bq.remove(m));
+		microservicesMessageQueues.remove(m);
 
-			microservicesMessageQueues.remove(m);
-		}
 	}
 
 	@Override
+	//TODO: Test awaitMessage - hadn't been tested
 	public Message awaitMessage(MicroService m) throws InterruptedException {
-
-		return null;
+		return microservicesMessageQueues.get(m).take();
 	}
 
 
