@@ -14,11 +14,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * <p>
  * You can add ONLY private methods and fields to this class.
  */
+// this class implemented as a thread-safe singleton that constructed with parameter of NumberOfEwoks
+    // instruction- first use init with the rellavent number of Ewoks and just then use getInstance to get the instance
 public class Ewoks {
     private final Ewok[] EwoksCollection;
     private static Ewoks singleton= null;
     private Ewoks(int NumberOfEwoks){
         EwoksCollection= new Ewok[NumberOfEwoks];
+        for (int i=0;i<EwoksCollection.length;i++) EwoksCollection[i]=new Ewok(i);
     }
 public synchronized static Ewoks init(int NumberOfEwoks){
         if (singleton!=null)throw new AssertionError("you allready initialized");
