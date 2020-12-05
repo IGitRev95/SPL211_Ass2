@@ -70,7 +70,8 @@ public class MessageBusImpl implements MessageBus {
 			throw new NullPointerException("none registered microservice");
 		}
 
-		BlockingQueue<MicroService> messageTypeHandlersQueue = messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
+		messagesHandlersQueues.putIfAbsent(type, new LinkedBlockingQueue<MicroService>());
+		BlockingQueue<MicroService> messageTypeHandlersQueue = messagesHandlersQueues.get(type);
 		if (messageTypeHandlersQueue != null && !messageTypeHandlersQueue.contains(m)) {
 			//no problem with sync cause only this microservice manipulates the MessageBus at all manners referring to itself
 			messageTypeHandlersQueue.add(m);
@@ -124,7 +125,7 @@ public class MessageBusImpl implements MessageBus {
 	 ??? more thoughts about this one
 	 */
 		//Syncronized for ,make sure that after checking that theres a subscriber to the message type you can actually take from the handlers queue for sending purposes
-		if((!messagesHandlersQueues.containsKey(e.getClass()))||messagesHandlersQueues.get(e).isEmpty()) {
+		if( (!messagesHandlersQueues.containsKey(e.getClass())) || (messagesHandlersQueues.get(e.getClass()).isEmpty()) ) {
 			return null;
 		}
 		else{
