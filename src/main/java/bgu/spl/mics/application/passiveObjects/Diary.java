@@ -2,6 +2,8 @@ package bgu.spl.mics.application.passiveObjects;
 
 
 import bgu.spl.mics.MessageBusImpl;
+
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class Diary {
     }
     private LinkedHashMap<TimeDetailOf,Long> TimeDetails= new LinkedHashMap<>();
     private int TotalAttacks=0;
+    private Timestamp initTime = new Timestamp(0000);
 
 
 public void SetTimeDetail(TimeDetailOf Name,long Time){

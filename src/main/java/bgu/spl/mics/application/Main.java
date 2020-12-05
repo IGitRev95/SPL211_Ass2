@@ -13,6 +13,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /** This is the Main class of the application. You should parse the input file,
  * create the different components of the application, and run the system.
@@ -29,15 +31,18 @@ public class Main {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 
+		CountDownLatch threadInitCounter = new CountDownLatch(4);
+		AtomicInteger attackCounter = new AtomicInteger(0);
+
 		Diary battleLog = Diary.getInstance();
 		Ewoks ewoksPool = Ewoks.init(inputJson.Ewoks);
 		MessageBus messageBus = new MessageBusImpl();
-		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks);//,messageBus,battleLog);
+		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks,threadInitCounter);//,messageBus,battleLog);
 		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2);//,messageBus,battleLog);
 		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando);//,messageBus,battleLog);
 
-		HanSoloMicroservice hSolo = new HanSoloMicroservice();//,messageBus,ewoksPool,battleLog);
-		C3POMicroservice c3po = new C3POMicroservice();//,messageBus,ewoksPool,battleLog);
+		HanSoloMicroservice hSolo = new HanSoloMicroservice(threadInitCounter,attackCounter);//,messageBus,ewoksPool,battleLog);
+		C3POMicroservice c3po = new C3POMicroservice(threadInitCounter,attackCounter);//,messageBus,ewoksPool,battleLog);
 
 		Thread pL = new Thread(pLeia);
 		Thread r2 = new Thread(r2D2);
