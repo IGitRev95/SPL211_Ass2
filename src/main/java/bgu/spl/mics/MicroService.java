@@ -29,7 +29,6 @@ public abstract class MicroService implements Runnable {
     private final String name;
     private MessageBus messageBus = MessageBusImpl.getInstance();
     private Map<Class<? extends Message>, Callback<? extends Message>> messageInstructions= new HashMap<>();
-    private Diary diary= Diary.getInstance();
 
     /**
      * @param name the micro-service name (used mainly for debugging purposes -

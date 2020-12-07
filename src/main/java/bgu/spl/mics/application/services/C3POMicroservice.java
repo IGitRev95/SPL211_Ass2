@@ -25,12 +25,12 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.*;
 public class C3POMicroservice extends MicroService {
     private Ewoks ewoks= Ewoks.getInstance();
     private CountDownLatch Initilized;
-    AtomicInteger totalAttacks;
+    private AtomicInteger totalAttacks;
 
-    public C3POMicroservice(CountDownLatch counter, AtomicInteger totalAttacks) {
+    public C3POMicroservice(CountDownLatch counter) {
         super("C3PO");
         Initilized=counter;
-        this.totalAttacks=totalAttacks;
+        this.totalAttacks=Diary.getInstance().getTotalAttacks();
     }
 
     @Override

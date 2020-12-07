@@ -27,24 +27,16 @@ public class Main {
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 
 		CountDownLatch threadInitCounter = new CountDownLatch(4);
-		AtomicInteger attackCounter = battleLog.getTotalAttacks();
 
 		Ewoks ewoksPool = Ewoks.init(inputJson.Ewoks);
 		MessageBus messageBus = new MessageBusImpl();
-		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks,threadInitCounter);//,messageBus,battleLog);
-		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2,threadInitCounter);//,messageBus,battleLog);
-		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando,threadInitCounter);//,messageBus,battleLog);
+		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks,threadInitCounter);
+		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2,threadInitCounter);
+		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando,threadInitCounter);
 
-		HanSoloMicroservice hSolo = new HanSoloMicroservice(threadInitCounter,attackCounter);//,messageBus,ewoksPool,battleLog);
-		C3POMicroservice c3po = new C3POMicroservice(threadInitCounter,attackCounter);//,messageBus,ewoksPool,battleLog);
-/*
-		Thread pL = new Thread(pLeia);
-		Thread r2 = new Thread(r2D2);
-		Thread lN = new Thread(lando);
-		Thread hS = new Thread(hSolo);
-		Thread c3 = new Thread(c3po);
-		Thread[] threads ={pL,r2,lN,hS,c3};
-*/
+		HanSoloMicroservice hSolo = new HanSoloMicroservice(threadInitCounter);
+		C3POMicroservice c3po = new C3POMicroservice(threadInitCounter);
+
 		Thread[] threads ={new Thread(pLeia),new Thread(lando),new Thread(r2D2),new Thread(hSolo),new Thread(c3po)};
 		for (Thread th:threads ) { th.start();}
 

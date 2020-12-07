@@ -24,12 +24,12 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.*;
 public class HanSoloMicroservice extends MicroService {
     private Ewoks ewoks = Ewoks.getInstance();
     private CountDownLatch Initilized;
-    AtomicInteger totalAttacks;
+    private AtomicInteger totalAttacks;
 
-    public HanSoloMicroservice(CountDownLatch counter, AtomicInteger totalAttacks) {
+    public HanSoloMicroservice(CountDownLatch counter) {
         super("Han");
         Initilized = counter;
-        this.totalAttacks = totalAttacks;
+        this.totalAttacks=Diary.getInstance().getTotalAttacks();
     }
 
 
