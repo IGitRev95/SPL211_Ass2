@@ -15,7 +15,7 @@ public class Ewok {
     /**
      * Acquires an Ewok
      */
-    // synchronized becasue 2 microservices can try to aquire the same Ewok at the same time
+    // synchronized because 2 microservices can try to acquire the same Ewok at the same time
     public synchronized void acquire() {
       while(!available) try {wait();}
       catch (InterruptedException e) {

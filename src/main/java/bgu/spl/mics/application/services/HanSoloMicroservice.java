@@ -55,7 +55,7 @@ public class HanSoloMicroservice extends MicroService {
         subscribeBroadcast(NoMoreAttackBroadcast.class, callback -> {
             //here updating Finishing
             Diary.getInstance().SetTimeDetail(HanSoloFinish,System.currentTimeMillis());
-            if (callback.getNumberOfAttacks() == totalAttacks.get() && callback.getIsSendedDeactivationEvent().compareAndSet(false, true)) {
+            if (callback.getNumberOfAttacks() == totalAttacks.get() && callback.getIsSentDeactivationEvent().compareAndSet(false, true)) {
                 // inform R2D2 to Deactivate
                 Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
                 //informing Lando to prepare for Bombing after R2D2 Deactivition

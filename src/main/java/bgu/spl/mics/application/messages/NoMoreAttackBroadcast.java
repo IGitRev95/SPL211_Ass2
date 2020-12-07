@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NoMoreAttackBroadcast implements Broadcast {
     private final int NumberOfAttacks;
-    private final AtomicBoolean IsSendedDeactivationEvent= new AtomicBoolean(false);
+    private final AtomicBoolean IsSentDeactivationEvent = new AtomicBoolean(false);
 
     public NoMoreAttackBroadcast (int NumberOfAttacks){
         this.NumberOfAttacks=NumberOfAttacks;
@@ -14,7 +14,7 @@ public class NoMoreAttackBroadcast implements Broadcast {
     public int getNumberOfAttacks() {
         return NumberOfAttacks;
     }
-    public AtomicBoolean getIsSendedDeactivationEvent(){
-        return IsSendedDeactivationEvent;
+    public AtomicBoolean getIsSentDeactivationEvent(){
+        return IsSentDeactivationEvent;
     }
 }

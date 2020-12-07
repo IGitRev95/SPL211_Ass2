@@ -9,7 +9,7 @@ package bgu.spl.mics.application.passiveObjects;
  * You can add ONLY private methods and fields to this class.
  */
 // this class implemented as a thread-safe singleton that constructed with parameter of NumberOfEwoks
-    // instruction- first use init with the rellavent number of Ewoks and just then use getInstance to get the instance
+    // instruction- first use init with the relevant number of Ewoks and just then use getInstance to get the instance
 public class Ewoks {
     private final Ewok[] EwoksCollection;
     private static Ewoks singleton= null;
@@ -18,8 +18,8 @@ public class Ewoks {
 
         for (int i=0;i<EwoksCollection.length;i++) EwoksCollection[i]=new Ewok(i+1);
     }
-public synchronized static Ewoks init(int NumberOfEwoks){
-        if (singleton!=null)throw new AssertionError("you allready initialized");
+    public synchronized static Ewoks init(int NumberOfEwoks){
+        if (singleton!=null)throw new AssertionError("you already initialized");
         singleton=new Ewoks(NumberOfEwoks);
         return singleton;
      }
@@ -35,7 +35,7 @@ public synchronized static Ewoks init(int NumberOfEwoks){
     //need to be public
     public void releaseEwok(int serial){
         if(EwoksCollection[serial-1]==null||EwoksCollection[serial-1].available)
-            throw new IllegalArgumentException("null or already relesed");
+            throw new IllegalArgumentException("null or already released");
         EwoksCollection[serial-1].release();
 
     }
