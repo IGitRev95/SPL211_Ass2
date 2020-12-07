@@ -102,7 +102,7 @@ public class Main {
 	 * @param outPutPath - output json file path
 	 */
 	public static void objectToOutputJsonFile(Gson gson, Object toOutputFile,String outPutPath) throws IOException {
-		FileWriter outputJson = new FileWriter("output.json");
+		FileWriter outputJson = new FileWriter(new File(outPutPath+"/output.json"));//TODO: Before submission remove "+"/output.json""
 		gson.toJson(toOutputFile,outputJson);
 		outputJson.close();
 	}
