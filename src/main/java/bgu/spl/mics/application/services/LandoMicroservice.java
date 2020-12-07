@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.Main;
 import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Diary;
@@ -17,11 +18,10 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate
  */
 public class LandoMicroservice  extends MicroService {
 private final long duration;
-private CountDownLatch Initilized;
-    public LandoMicroservice(long duration, CountDownLatch countdown) {
+
+    public LandoMicroservice(long duration) {
         super("Lando");
         this.duration=duration;
-        this.Initilized=countdown;
     }
 
     @Override
@@ -41,6 +41,6 @@ private CountDownLatch Initilized;
            Diary.getInstance().SetTimeDetail(LandoTerminate,System.currentTimeMillis());
            terminate();
        });
-        Initilized.countDown();
+        Main.threadInitCounter.countDown();
     }
 }

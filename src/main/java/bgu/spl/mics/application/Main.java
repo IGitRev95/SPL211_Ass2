@@ -19,26 +19,31 @@ import java.util.concurrent.atomic.AtomicInteger;
  * In the end, you should output a JSON.
  */
 public class Main {
-	public static void main(String[] args) throws FileNotFoundException {
+	public static CountDownLatch  threadInitCounter= new CountDownLatch(4);
 
-		Diary battleLog = Diary.getInstance();// manage Time stamps relatively to its creation
+	public static void main(String[] args) throws FileNotFoundException {
 
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 
-		CountDownLatch threadInitCounter = new CountDownLatch(4);
+		Ewoks.init(inputJson.Ewoks);
+		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks);
+		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2);
+		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando);
 
-		Ewoks ewoksPool = Ewoks.init(inputJson.Ewoks);
-		MessageBus messageBus = new MessageBusImpl();
-		LeiaMicroservice pLeia = new LeiaMicroservice(inputJson.attacks,threadInitCounter);
-		R2D2Microservice r2D2 = new R2D2Microservice(inputJson.R2D2,threadInitCounter);
-		LandoMicroservice lando = new LandoMicroservice(inputJson.Lando,threadInitCounter);
+		HanSoloMicroservice hSolo = new HanSoloMicroservice();
+		C3POMicroservice c3po = new C3POMicroservice();
 
-		HanSoloMicroservice hSolo = new HanSoloMicroservice(threadInitCounter);
-		C3POMicroservice c3po = new C3POMicroservice(threadInitCounter);
-
-		Thread[] threads ={new Thread(pLeia),new Thread(lando),new Thread(r2D2),new Thread(hSolo),new Thread(c3po)};
+		Thread[] threads ={new Thread(lando),new Thread(r2D2),new Thread(hSolo),new Thread(c3po)};
 		for (Thread th:threads ) { th.start();}
+		try {
+			threadInitCounter.await();
+			Thread pL = new Thread(pLeia);
+			pL.start();
+			pL.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		for (Thread th:threads ) {
 			try {

@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.Main;
 import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
@@ -22,11 +23,10 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate
  */
 public class R2D2Microservice extends MicroService {
 private final long duration;
-private CountDownLatch Initilized;
-    public R2D2Microservice(long duration, CountDownLatch countdown) {
+
+    public R2D2Microservice(long duration) {
         super("R2D2");
         this.duration=duration;
-        this.Initilized=countdown;
     }
 
     @Override
@@ -47,7 +47,7 @@ private CountDownLatch Initilized;
             //here updating terminate
             Diary.getInstance().SetTimeDetail(R2D2Terminate,System.currentTimeMillis());
             terminate();} );
-        Initilized.countDown();
+        Main.threadInitCounter.countDown();
     }
 
 }

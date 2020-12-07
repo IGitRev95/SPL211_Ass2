@@ -2,6 +2,7 @@ package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.Main;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
@@ -24,12 +25,10 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.*;
  */
 public class C3POMicroservice extends MicroService {
     private Ewoks ewoks= Ewoks.getInstance();
-    private CountDownLatch Initilized;
     private AtomicInteger totalAttacks;
 
-    public C3POMicroservice(CountDownLatch counter) {
+    public C3POMicroservice() {
         super("C3PO");
-        Initilized=counter;
         this.totalAttacks=Diary.getInstance().getTotalAttacks();
     }
 
@@ -66,7 +65,7 @@ public class C3POMicroservice extends MicroService {
             Diary.getInstance().SetTimeDetail(C3POTerminate,System.currentTimeMillis());
             terminate();
         });
-        Initilized.countDown();
+        Main.threadInitCounter.countDown();
     }
 }
 

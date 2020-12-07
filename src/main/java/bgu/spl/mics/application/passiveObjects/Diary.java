@@ -21,11 +21,9 @@ public class Diary {
 
     private AtomicInteger totalAttacks = new AtomicInteger(0);
     private Map<TimeDetailOf,Long> TimeDetails= new LinkedHashMap<>();
-    private final long initTime = System.currentTimeMillis();
-
 
     public void SetTimeDetail(TimeDetailOf Name,long Time){
-    TimeDetails.putIfAbsent(Name,Time-this.initTime);
+    TimeDetails.putIfAbsent(Name,Time);
     }
     public Long getTimeOF(TimeDetailOf Type){
     return TimeDetails.getOrDefault(Type, null);

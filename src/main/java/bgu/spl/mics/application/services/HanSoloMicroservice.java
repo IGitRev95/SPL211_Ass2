@@ -3,6 +3,7 @@ package bgu.spl.mics.application.services;
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.Main;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
@@ -23,12 +24,10 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.*;
  */
 public class HanSoloMicroservice extends MicroService {
     private Ewoks ewoks = Ewoks.getInstance();
-    private CountDownLatch Initilized;
     private AtomicInteger totalAttacks;
 
-    public HanSoloMicroservice(CountDownLatch counter) {
+    public HanSoloMicroservice() {
         super("Han");
-        Initilized = counter;
         this.totalAttacks=Diary.getInstance().getTotalAttacks();
     }
 
@@ -75,7 +74,7 @@ public class HanSoloMicroservice extends MicroService {
             Diary.getInstance().SetTimeDetail(HanSoloTerminate,System.currentTimeMillis());
             terminate();
         });
-        Initilized.countDown();
+        Main.threadInitCounter.countDown();
     }
 
 }

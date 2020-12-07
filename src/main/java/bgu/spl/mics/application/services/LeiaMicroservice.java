@@ -22,12 +22,10 @@ import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate
  */
 public class LeiaMicroservice extends MicroService {
     private final Attack[] attacks;
-    private final CountDownLatch AttackersWereInitialized;
 
-    public LeiaMicroservice(Attack[] attacks, CountDownLatch counter) {
+    public LeiaMicroservice(Attack[] attacks) {
         super("Leia");
         this.attacks = attacks;
-        AttackersWereInitialized = counter;
     }
 
     @Override
@@ -36,11 +34,7 @@ public class LeiaMicroservice extends MicroService {
             //here updating terminate
             Diary.getInstance().SetTimeDetail(LeiaTerminate,System.currentTimeMillis());
             terminate();});
-        try {
-            AttackersWereInitialized.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         for (int i = 0; i < attacks.length; i++) {
             sendEvent(new AttackEvent(attacks[i]));
         }
