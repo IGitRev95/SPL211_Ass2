@@ -1,5 +1,4 @@
 package bgu.spl.mics;
-import bgu.spl.mics.application.messages.AttackEvent;
 
 import java.util.concurrent.*;
 

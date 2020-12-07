@@ -1,11 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
 
-
-import bgu.spl.mics.MessageBusImpl;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
  * Passive object representing the resource manager.
  * <p>

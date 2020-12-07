@@ -8,12 +8,9 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.*;
-
 
 /**
  * C3POMicroservices is in charge of the handling {@link AttackEvent}.

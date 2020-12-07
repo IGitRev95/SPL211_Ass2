@@ -1,8 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
-import java.util.Comparator;
 import java.util.List;
-
 
 /**
  * Passive data-object representing an attack object.

@@ -2,13 +2,9 @@ package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.Main;
-import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Diary;
-import bgu.spl.mics.application.passiveObjects.TimeDetailOf;
-
-import java.util.concurrent.CountDownLatch;
 
 import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Deactivate;
 import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate;

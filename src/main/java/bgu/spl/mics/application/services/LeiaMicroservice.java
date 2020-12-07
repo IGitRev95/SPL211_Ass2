@@ -1,16 +1,11 @@
 package bgu.spl.mics.application.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import bgu.spl.mics.Future;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.*;//should already know it? maybe needless
 import bgu.spl.mics.application.passiveObjects.*;
-import java.util.concurrent.CountDownLatch;
 
 import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.LeiaTerminate;
-import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate;
 
 /**
  * LeiaMicroservices Initialized with Attack objects, and sends them as  {@link AttackEvent}.

@@ -1,10 +1,7 @@
 package bgu.spl.mics;
-import bgu.spl.mics.application.passiveObjects.Diary;
 
-import javax.print.attribute.standard.DialogTypeSelection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The MicroService is an abstract class that any micro-service in the system

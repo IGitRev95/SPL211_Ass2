@@ -6,10 +6,8 @@ import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Diary;
 
-import java.util.concurrent.CountDownLatch;
-
 import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.LandoTerminate;
-import static bgu.spl.mics.application.passiveObjects.TimeDetailOf.R2D2Terminate;
+
 
 /**
  * LandoMicroservice
