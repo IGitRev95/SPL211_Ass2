@@ -51,14 +51,14 @@ public class C3POMicroservice extends MicroService {
             totalAttacks.incrementAndGet();
         });
         subscribeBroadcast(NoMoreAttackBroadcast.class, c->{
+            //here updating Finishing
+            Diary.getInstance().SetTimeDetail(C3POFinish,System.currentTimeMillis());
             if (c.getNumberOfAttacks()==totalAttacks.get()&&c.getIsSendedDeactivationEvent().compareAndSet(false,true)){
               // inform R2D2 to Deactivate
                 Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
                 //informing Lando to prepare for Bombing after R2D2 Deactivition
                 sendEvent(new BombDestroyerEvent(DeactivionFuture));
             }
-            //here updating Finishing
-            Diary.getInstance().SetTimeDetail(C3POFinish,System.currentTimeMillis());
         } );
         subscribeBroadcast(TerminateBroadcast.class, c->{
             //here updating terminate

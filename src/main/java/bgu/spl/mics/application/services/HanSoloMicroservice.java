@@ -55,16 +55,14 @@ public class HanSoloMicroservice extends MicroService {
         });
         // how to react when Leia send that there are no more attacks
         subscribeBroadcast(NoMoreAttackBroadcast.class, callback -> {
-
+            //here updating Finishing
+            Diary.getInstance().SetTimeDetail(HanSoloFinish,System.currentTimeMillis());
             if (callback.getNumberOfAttacks() == totalAttacks.get() && callback.getIsSendedDeactivationEvent().compareAndSet(false, true)) {
                 // inform R2D2 to Deactivate
                 Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
                 //informing Lando to prepare for Bombing after R2D2 Deactivition
                 sendEvent(new BombDestroyerEvent(DeactivionFuture));
             }
-            //here updating Finishing
-            Diary.getInstance().SetTimeDetail(HanSoloFinish,System.currentTimeMillis());
-
         });
 
 
