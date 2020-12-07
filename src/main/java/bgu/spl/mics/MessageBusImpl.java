@@ -15,7 +15,7 @@ public class MessageBusImpl implements MessageBus {
 	//mapping queues of message handlers to their message
 	private ConcurrentHashMap<Class<? extends Message> , BlockingQueue<MicroService>> messagesHandlersQueues = new ConcurrentHashMap<>();
 	//mapping Futures to their event
-	private ConcurrentHashMap<Event<?>,Future<?>> eventFutureConcurrentHashMap = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Event<?>,Future> eventFutureConcurrentHashMap = new ConcurrentHashMap<>();
 
 	private static class SingletonHolder {
 		private static MessageBusImpl instance= new MessageBusImpl();
@@ -63,7 +63,7 @@ public class MessageBusImpl implements MessageBus {
 	public <T> void complete(Event<T> e, T result) {
 
 		if (eventFutureConcurrentHashMap.containsKey(e)) {
-			((Future<T>)eventFutureConcurrentHashMap.get(e)).resolve(result);
+			eventFutureConcurrentHashMap.get(e).resolve(result);
 		} else {
 			try {
 				throw new NoSuchFieldException("Event was never added to Event-Future hash map");
