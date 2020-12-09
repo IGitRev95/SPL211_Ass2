@@ -64,11 +64,7 @@ public class MessageBusImpl implements MessageBus {
 		if (eventFutureConcurrentHashMap.containsKey(e)) {
 			eventFutureConcurrentHashMap.get(e).resolve(result);
 		} else {
-			try {
-				throw new NoSuchFieldException("Event was never added to Event-Future hash map");
-			} catch (NoSuchFieldException noSuchFieldException) {
-				noSuchFieldException.printStackTrace();
-			}
+			throw new IllegalArgumentException("Event was never added to Event-Future hash map");
 		}
 	}
 
