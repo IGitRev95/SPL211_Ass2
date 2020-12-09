@@ -53,7 +53,7 @@ public class Main {
 
 
 		try {
-			objectToOutputJsonFile(gson, new OutputDiaryFormat() , args[1]);
+			objectToOutputJsonFile(gson, Diary.getInstance() , args[1]);
 		}catch (IOException exp){ exp.printStackTrace();}
 
 		System.out.println("Finish");
@@ -69,30 +69,6 @@ public class Main {
 		public int Ewoks=0;
 	}
 
-	public static class OutputDiaryFormat {
-		public int totalAttacks;
-		public long HanSoloFinish;
-		public long C3POFinish;
-		public long R2D2Deactivate;
-		public long LeiaTerminate;
-		public long HanSoloTerminate;
-		public long C3POTerminate;
-		public long R2D2Terminate;
-		public long LandoTerminate;
-
-		public OutputDiaryFormat(){
-			Diary diary = Diary.getInstance();
-			totalAttacks=diary.getTotalAttacks().get();
-			HanSoloFinish= diary.getTimeOF(TimeDetailOf.HanSoloFinish);
-			C3POFinish= diary.getTimeOF(TimeDetailOf.C3POFinish);
-			R2D2Deactivate= diary.getTimeOF(TimeDetailOf.R2D2Deactivate);
-			LeiaTerminate= diary.getTimeOF(TimeDetailOf.LeiaTerminate);
-			HanSoloTerminate= diary.getTimeOF(TimeDetailOf.HanSoloTerminate);
-			C3POTerminate= diary.getTimeOF(TimeDetailOf.C3POTerminate);
-			R2D2Terminate= diary.getTimeOF(TimeDetailOf.R2D2Terminate);
-			LandoTerminate= diary.getTimeOF(TimeDetailOf.LandoTerminate);
-		}
-	}
 
 	/** This method creates an output json file from an object at defined path given by user
 	 * @param gson - Gson parser
