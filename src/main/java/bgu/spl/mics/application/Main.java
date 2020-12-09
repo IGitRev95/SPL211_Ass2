@@ -19,7 +19,7 @@ public class Main {
 	public static CountDownLatch  threadInitCounter= new CountDownLatch(4);
 
 	public static void main(String[] args) throws FileNotFoundException {
-
+        Diary.getInstance();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 

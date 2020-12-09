@@ -18,12 +18,12 @@ public class Diary {
     private static class SingletonHolder {
         private static Diary instance= new Diary();
     }
-
+    private static long initime=System.currentTimeMillis();
     private AtomicInteger totalAttacks = new AtomicInteger(0);
     private Map<TimeDetailOf,Long> TimeDetails= new LinkedHashMap<>();
 
     public void SetTimeDetail(TimeDetailOf Name,long Time){
-    TimeDetails.putIfAbsent(Name,Time);
+    TimeDetails.putIfAbsent(Name,Time-initime);
     }
     public Long getTimeOF(TimeDetailOf Type){
     return TimeDetails.getOrDefault(Type, null);
