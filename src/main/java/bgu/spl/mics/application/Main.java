@@ -1,9 +1,6 @@
 package bgu.spl.mics.application;
 
-import bgu.spl.mics.application.passiveObjects.Attack;
-import bgu.spl.mics.application.passiveObjects.Diary;
-import bgu.spl.mics.application.passiveObjects.Ewoks;
-import bgu.spl.mics.application.passiveObjects.TimeDetailOf;
+import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.application.services.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,11 +13,11 @@ import java.util.concurrent.CountDownLatch;
  * In the end, you should output a JSON.
  */
 public class Main {
-	public static CountDownLatch  threadInitCounter;
+	public static CountDownLatch  threadInitCounter;//verifying that all the MicroServices except of Leia finished initialized
 
 	public static void main(String[] args) throws FileNotFoundException {
 		threadInitCounter = new CountDownLatch(4);
-
+		//Json Parsing
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);
 
