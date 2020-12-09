@@ -29,21 +29,22 @@ private final long duration;
     protected void initialize() {
      subscribeEvent(DeactivationEvent.class,callback-> {
          try {
-             Thread.sleep(duration);
+             Thread.sleep(duration); //beginning Deactivate
          } catch (InterruptedException e) {
              e.printStackTrace();
          }
 
          complete(callback,true);
-         //here updating finishing
+         // Updating R2D2 Finishing time
          Diary.getInstance().SetTimeDetail(R2D2Deactivate,System.currentTimeMillis());
 
      });
         subscribeBroadcast(TerminateBroadcast.class, c->{
-            //here updating terminate
+            //Updating R2D2 Terminate Time
             Diary.getInstance().SetTimeDetail(R2D2Terminate,System.currentTimeMillis());
             terminate();} );
-        Main.threadInitCounter.countDown();
+
+        Main.threadInitCounter.countDown();// by using countdown informing leia that R2D2 inititilized
     }
 
 }

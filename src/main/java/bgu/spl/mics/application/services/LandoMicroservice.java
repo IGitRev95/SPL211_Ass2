@@ -27,18 +27,19 @@ private final long duration;
 
        subscribeEvent(BombDestroyerEvent.class,callback-> {
            try {
+               // get the Future of Deactivation and wait to be resolved
                if (callback.getDeactivitionIsPerformed().get()){
-               Thread.sleep(duration);
-               complete(callback,true);}
+               Thread.sleep(duration); //Bombing !!
+               complete(callback,true);} // result true if succeed Bombing
            } catch (InterruptedException e) {
                e.printStackTrace();
-               complete(callback,false);}
+               complete(callback,false);} // result false if interrupted by Bombing
 
            sendBroadcast(new TerminateBroadcast());
-           //here updating terminate
+           //Updating Lando Terminate Time
            Diary.getInstance().SetTimeDetail(LandoTerminate,System.currentTimeMillis());
            terminate();
        });
-        Main.threadInitCounter.countDown();
+        Main.threadInitCounter.countDown();// by using countdown informing leia that Lando initialized
     }
 }

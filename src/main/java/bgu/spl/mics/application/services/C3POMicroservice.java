@@ -31,25 +31,32 @@ public class C3POMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
+        // initialize of C3PO is similar to Initiliaze of Hansolo
         subscribeEvent(AttackEvent.class, callback-> {
+            // how to react to attack event
             List<Integer> EwoksForAttack = callback.getSerials();
             EwoksForAttack.sort(Integer::compareTo);// sorting serials for preventing deadlock case [1,2] [2,1]
+            // acquiring the required Ewoks in the Event for Attack
             for (int i=0;i<EwoksForAttack.size(); i++) {ewoks.acquireEwok(EwoksForAttack.get(i)); }
             try {
-                Thread.sleep(callback.getDuration());
-                complete(callback,true);
+                Thread.sleep(callback.getDuration());// Attack!!!
+                complete(callback,true);// true if succeed to Attack without Interruption
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                complete(callback, false);
+                complete(callback, false);// false if the thread interrupted when attacked (in fact doesnt Matter the result and there arent interruption in our implementation)
             }
+            // releasing the required Ewoks in the Event from Attack
             for (int i=0;i<EwoksForAttack.size(); i++) {ewoks.releaseEwok(EwoksForAttack.get(i));
             }
 
-            totalAttacks.incrementAndGet();
+            totalAttacks.incrementAndGet();// increment the attack that performed
         });
+        // how to react when Leia send that there are no more attacks
         subscribeBroadcast(NoMoreAttackBroadcast.class, c->{
-            //here updating Finishing
+            // Updating C3PO Finishing time
             Diary.getInstance().SetTimeDetail(C3POFinish,System.currentTimeMillis());
+            //codition to send Deactivion Event-> all the attacks done and that not sended already Deactivation Evant (which both checked atomicly)
+            // Only one Attacker Microservie send this Event (implemented by using CompareAndSet atomic Method)
             if (c.getNumberOfAttacks()==totalAttacks.get()&&c.getIsSentDeactivationEvent().compareAndSet(false,true)){
               // inform R2D2 to Deactivate
                 Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
@@ -57,12 +64,13 @@ public class C3POMicroservice extends MicroService {
                 sendEvent(new BombDestroyerEvent(DeactivionFuture));
             }
         } );
+        // how to react to terminate broadcast
         subscribeBroadcast(TerminateBroadcast.class, c->{
-            //here updating terminate
+            //Updating C3PO Terminate Time
             Diary.getInstance().SetTimeDetail(C3POTerminate,System.currentTimeMillis());
             terminate();
         });
-        Main.threadInitCounter.countDown();
+        Main.threadInitCounter.countDown();// by using countdown informing leia that C3PO inititilized
     }
 }
 
