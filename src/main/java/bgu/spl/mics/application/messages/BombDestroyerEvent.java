@@ -4,7 +4,9 @@ import bgu.spl.mics.Event;
 import bgu.spl.mics.Future;
 
 /**
- * this Event is sended to Lando to ask him use Bomb
+ * this Event is sent to Lando to ask him use Bomb
+ * holding the future of the deactivation event used to confirm full execution
+ * of the Deactivation Event
  */
 public class BombDestroyerEvent implements Event<Boolean> {
     private Future<Boolean> DeactivitionIsPerformed;
