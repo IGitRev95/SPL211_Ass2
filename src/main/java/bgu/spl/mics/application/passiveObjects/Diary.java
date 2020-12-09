@@ -21,7 +21,7 @@ public class Diary {
     private Map<TimeDetailOf,Long> TimeDetails= new LinkedHashMap<>();
 
     public void SetTimeDetail(TimeDetailOf Name,long Time){
-    TimeDetails.putIfAbsent(Name,Time);
+    TimeDetails.put(Name,Time);
     }
     public Long getTimeOF(TimeDetailOf Type){
     return TimeDetails.getOrDefault(Type, null);
