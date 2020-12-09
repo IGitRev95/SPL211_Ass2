@@ -29,7 +29,6 @@ public class HanSoloMicroservice extends MicroService {
         this.totalAttacks=Diary.getInstance().getTotalAttacks();
     }
 
-
     @Override
     protected void initialize() {
         subscribeEvent(AttackEvent.class, callback -> {
