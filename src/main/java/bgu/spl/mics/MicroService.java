@@ -57,8 +57,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        messageInstructions.put(type,callback);
-    	messageBus.subscribeEvent(type,this);
+        messageInstructions.put(type,callback); //Documenting instructions for handling Event of certain type
+    	messageBus.subscribeEvent(type,this); //notifying the message bus of ability of handling a message of type
     }
 
     /**
@@ -82,8 +82,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        messageInstructions.put(type,callback);
-    	messageBus.subscribeBroadcast(type, this);
+        messageInstructions.put(type,callback); //Documenting instructions for handling broadcast of certain type
+    	messageBus.subscribeBroadcast(type, this); //notifying the message bus of ability of handling a broadcast of type
     }
 
     /**
@@ -154,7 +154,7 @@ public abstract class MicroService implements Runnable {
     @Override
     public final void run() {
         messageBus.register(this);
-        this.initialize();
+        this.initialize(); //specific set up of that microservice
         while(!terminate){
             try {
                 Message CurrentMessage = messageBus.awaitMessage(this);
