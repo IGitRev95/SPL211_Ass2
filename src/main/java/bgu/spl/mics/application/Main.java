@@ -63,10 +63,10 @@ public class Main {
 	 * accessing the input data parsed from the input json file
 	 */
 	public class ParseJson{
-		public Attack[] attacks=null;
-		public long R2D2=0;
-		public long Lando=0;
-		public int Ewoks=0;
+		private Attack[] attacks=null;
+		private long R2D2=0;
+		private long Lando=0;
+		private int Ewoks=0;
 	}
 
 
