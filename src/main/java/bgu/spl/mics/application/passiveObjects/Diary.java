@@ -33,19 +33,6 @@ public class Diary {
     }
     public AtomicInteger getTotalAttacks(){return totalAttacks;}
 
-
-/* TODO: maybe not needed
-public void GenerateOutputJson(){
-    // making Output json here with the all the names
-    // iterate the map like this , its will keep the order they inserted
-    for (Map.Entry<TimeDetailOf,Long> entry: TimeDetails.entrySet()){
-        String type= entry.getKey().toString();
-        Long Time= entry.getValue();
-
-    }
-    }
-  */
-
     public static Diary getInstance() {
         return Diary.SingletonHolder.instance;
     }
