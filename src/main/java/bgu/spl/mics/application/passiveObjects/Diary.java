@@ -1,7 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
 
-
-import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
