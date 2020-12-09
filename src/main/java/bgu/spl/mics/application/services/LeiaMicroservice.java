@@ -28,12 +28,12 @@ public class LeiaMicroservice extends MicroService {
             //Updating Leia Terminate Time
             Diary.getInstance().SetTimeDetail(LeiaTerminate,System.currentTimeMillis());
             terminate();});
-
+        //Sending the Attacks
         for (int i = 0; i < attacks.length; i++) {
             sendEvent(new AttackEvent(attacks[i]));
         }
-        //send Broadcast to All attacker microservices (han solo, c3po) that all attack event sended
-        // informing them that one of them need to send Deactivition Event to R2D2
+        //sending Broadcast to all attacker microservices (HanSolo, C3po) that all attack event sent
+        //informing them that one of them should send Deactivation Event to R2D2
        sendBroadcast(new NoMoreAttackBroadcast(attacks.length));
     }
 }

@@ -44,7 +44,7 @@ private final long duration;
             Diary.getInstance().SetTimeDetail(R2D2Terminate,System.currentTimeMillis());
             terminate();} );
 
-        Main.threadInitCounter.countDown();// by using countdown informing leia that R2D2 inititilized
+        Main.threadInitCounter.countDown();// by using countdown informing leia that R2D2 initialized
     }
 
 }

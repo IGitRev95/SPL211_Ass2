@@ -24,7 +24,6 @@ private final long duration;
 
     @Override
     protected void initialize() {
-
        subscribeEvent(BombDestroyerEvent.class,callback-> {
            try {
                // get the Future of Deactivation and wait to be resolved
