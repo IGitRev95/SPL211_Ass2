@@ -26,12 +26,15 @@ public class C3POMicroservice extends MicroService {
 
     public C3POMicroservice() {
         super("C3PO");
+        /*
+        Recording the total attacks that have been completed in total by all attack handlers by incrementing while finish each
+         */
         this.totalAttacks=Diary.getInstance().getTotalAttacks();
     }
 
     @Override
     protected void initialize() {
-        // initialize of C3PO is similar to Initiliaze of Hansolo
+        // initialize of C3PO is similar to Initialize of HanSolo
         subscribeEvent(AttackEvent.class, callback-> {
             // how to react to attack event
             List<Integer> EwoksForAttack = callback.getSerials();
@@ -51,26 +54,32 @@ public class C3POMicroservice extends MicroService {
 
             totalAttacks.incrementAndGet();// increment the attack that performed
         });
+
         // how to react when Leia send that there are no more attacks
         subscribeBroadcast(NoMoreAttackBroadcast.class, c->{
             // Updating C3PO Finishing time
             Diary.getInstance().SetTimeDetail(C3POFinish,System.currentTimeMillis());
-            //codition to send Deactivion Event-> all the attacks done and that not sended already Deactivation Evant (which both checked atomicly)
-            // Only one Attacker Microservie send this Event (implemented by using CompareAndSet atomic Method)
+            /*
+            condition to send Deactivation Event-> all the attacks done
+            and the Deactivation Event hadn't already been sent (which both are checked atomically)
+            Only one Attacker Microservice send this Event (implemented by using CompareAndSet atomic Method)
+            */
             if (c.getNumberOfAttacks()==totalAttacks.get()&&c.getIsSentDeactivationEvent().compareAndSet(false,true)){
-              // inform R2D2 to Deactivate
-                Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
-                //informing Lando to prepare for Bombing after R2D2 Deactivition
-                sendEvent(new BombDestroyerEvent(DeactivionFuture));
+                // inform R2D2 to Deactivate
+                Future<Boolean> DeactivationFuture= sendEvent(new DeactivationEvent());
+                //informing Lando to prepare for Bombing after R2D2 Deactivation (by the Future)
+                // (because R2D2 cant talk...)
+                sendEvent(new BombDestroyerEvent(DeactivationFuture));
             }
-        } );
+        });
+
         // how to react to terminate broadcast
         subscribeBroadcast(TerminateBroadcast.class, c->{
             //Updating C3PO Terminate Time
             Diary.getInstance().SetTimeDetail(C3POTerminate,System.currentTimeMillis());
             terminate();
         });
-        Main.threadInitCounter.countDown();// by using countdown informing leia that C3PO inititilized
+        Main.threadInitCounter.countDown();// by using countdown informing leia that C3PO initialized
     }
 }
 

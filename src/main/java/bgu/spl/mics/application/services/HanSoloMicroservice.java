@@ -26,13 +26,15 @@ public class HanSoloMicroservice extends MicroService {
 
     public HanSoloMicroservice() {
         super("Han");
-        //recorded the total attacks that completed and increment when finishing one
+        /*
+        Recording the total attacks that have been completed in total by all attack handlers by incrementing while finish each
+         */
         this.totalAttacks=Diary.getInstance().getTotalAttacks();
     }
 
     @Override
     protected void initialize() {
-        // initialize of Hansolo is similar to Initiliaze of C3PO
+        // initialize of HanSolo is similar to Initialize of C3PO
         subscribeEvent(AttackEvent.class, callback -> {
             // how to react to attack event
             List<Integer> EwoksForAttack = callback.getSerials();
@@ -54,18 +56,22 @@ public class HanSoloMicroservice extends MicroService {
             }
             totalAttacks.incrementAndGet(); // increment the attack that performed
         });
+
         // how to react when Leia send that there are no more attacks
         subscribeBroadcast(NoMoreAttackBroadcast.class, callback -> {
             // Updating HanSolo Finishing time
             Diary.getInstance().SetTimeDetail(HanSoloFinish,System.currentTimeMillis());
-            //codition to send Deactivion Event-> all the attacks done and that not sended already Deactivation Evant (which both checked atomicly)
-            // Only one Attacker Microservie send this Event (implemented by using CompareAndSet atomic Method)
+            /*
+            condition to send Deactivation Event-> all the attacks done
+            and the Deactivation Event hadn't already been sent (which both are checked atomically)
+            Only one Attacker Microservice send this Event (implemented by using CompareAndSet atomic Method)
+            */
             if (callback.getNumberOfAttacks() == totalAttacks.get() && callback.getIsSentDeactivationEvent().compareAndSet(false, true)) {
                 // inform R2D2 to Deactivate
-                Future<Boolean> DeactivionFuture= sendEvent(new DeactivationEvent());
-                //informing Lando to prepare for Bombing after R2D2 Deactivition (by the Future)
-                // because R2D2 cant take...
-                sendEvent(new BombDestroyerEvent(DeactivionFuture));
+                Future<Boolean> DeactivationFuture= sendEvent(new DeactivationEvent());
+                //informing Lando to prepare for Bombing after R2D2 Deactivation (by the Future)
+                // (because R2D2 cant talk...)
+                sendEvent(new BombDestroyerEvent(DeactivationFuture));
             }
         });
 
@@ -75,7 +81,7 @@ public class HanSoloMicroservice extends MicroService {
             Diary.getInstance().SetTimeDetail(HanSoloTerminate,System.currentTimeMillis());
             terminate();
         });
-        Main.threadInitCounter.countDown(); // by using countdown informing leia that Hansolo initialized
+        Main.threadInitCounter.countDown(); // by using countdown informing leia that HanSolo initialized
     }
 
 }
