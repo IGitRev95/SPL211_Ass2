@@ -102,26 +102,29 @@ public class MessageBusImpl implements MessageBus {
 	 ??? more thoughts about this one
 	 */
 		//Syncronized for ,make sure that after checking that theres a subscriber to the message type you can actually take from the handlers queue for sending purposes
-		if( (!messagesHandlersQueues.containsKey(e.getClass())) || (messagesHandlersQueues.get(e.getClass()).isEmpty()) ) {
+		if(messagesHandlersQueues.get(e.getClass())==null)
 			return null;
-		}
-		else{
-			MicroService handler = messagesHandlersQueues.get(e.getClass()).remove(); //remove() throws exception if Q is empty (shouldn't be by former check)
-			try {
-				microservicesMessageQueues.get(handler).put(e); // putting the event in the next handler
-				messagesHandlersQueues.get(e.getClass()).put(handler); // returning it to the top of the Q for round robin fashion -
-				// TODO:!! must be sure that happens in one cpu cycle so no body else will interrupt in the Delivery Order of the Q
-				// put() of blocking Q is add to the end and if theres no space wait until you can - therefore could possibly be blocking
-			} catch (InterruptedException interruptedException) {
+		synchronized (messagesHandlersQueues.get(e.getClass())) {
+			if ((!messagesHandlersQueues.containsKey(e.getClass())) || (messagesHandlersQueues.get(e.getClass()).isEmpty())) {
+				return null;
+			} else {
+				Future<T> future = new Future<T>();
+				eventFutureConcurrentHashMap.putIfAbsent(e, future);
+				MicroService handler = messagesHandlersQueues.get(e.getClass()).remove(); //remove() throws exception if Q is empty (shouldn't be by former check)
+				try {
+					microservicesMessageQueues.get(handler).put(e); // putting the event in the next handler
+					messagesHandlersQueues.get(e.getClass()).put(handler); // returning it to the top of the Q for round robin fashion -
+					// TODO:!! must be sure that happens in one cpu cycle so no body else will interrupt in the Delivery Order of the Q
+					// put() of blocking Q is add to the end and if theres no space wait until you can - therefore could possibly be blocking
+				} catch (InterruptedException interruptedException) {
 				/*
 				exception might be thrown if handler wasn't a key in microservicesMessageQueues hash map - never registered or an other problem
 				otherwise put() is blocking as mentioned above so in some cases it will be waiting till completion or interruption
 				 */
-				interruptedException.printStackTrace();
+					interruptedException.printStackTrace();
+				}
+				return future;
 			}
-			Future<T> future = new Future<T>();
-			eventFutureConcurrentHashMap.putIfAbsent(e,future);
-			return future;
 		}
 	}
 
