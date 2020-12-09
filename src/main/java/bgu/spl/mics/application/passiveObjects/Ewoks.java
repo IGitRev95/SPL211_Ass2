@@ -34,9 +34,9 @@ public class Ewoks {
     }
     //need to be public
     public void releaseEwok(int serial){
-        if(EwoksCollection[serial-1]==null||EwoksCollection[serial-1].available)
+        if( (EwoksCollection[ serial-1 ] == null) || (EwoksCollection[ serial-1 ].available) )
             throw new IllegalArgumentException("null or already released");
-        EwoksCollection[serial-1].release();
+        EwoksCollection[ serial-1 ].release();
 
     }
 
