@@ -16,9 +16,10 @@ import java.util.concurrent.CountDownLatch;
  * In the end, you should output a JSON.
  */
 public class Main {
-	public static CountDownLatch  threadInitCounter= new CountDownLatch(4);
+	public static CountDownLatch  threadInitCounter;
 
 	public static void main(String[] args) throws FileNotFoundException {
+		threadInitCounter = new CountDownLatch(4);
 
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ParseJson inputJson = gson.fromJson(new FileReader(args[0]),ParseJson.class);

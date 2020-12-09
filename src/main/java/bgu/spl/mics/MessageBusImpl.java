@@ -60,7 +60,6 @@ public class MessageBusImpl implements MessageBus {
 	@SuppressWarnings("unchecked")
 	//TODO: Test complete - hadn't been tested
 	public <T> void complete(Event<T> e, T result) {
-
 		if (eventFutureConcurrentHashMap.containsKey(e)) {
 			eventFutureConcurrentHashMap.get(e).resolve(result);
 		} else {
